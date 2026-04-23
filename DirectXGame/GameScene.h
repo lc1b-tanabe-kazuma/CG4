@@ -20,9 +20,6 @@ private:
 	// テクスチャーハンドル
 	uint32_t textureHandle_ = 0;
 
-	// 3Dモデル
-	// KamataEngine::Model* model_ = nullptr;
-
 	// カメラ
 	KamataEngine::Camera camera_;
 
