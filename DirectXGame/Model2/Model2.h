@@ -129,8 +129,16 @@ public: // 静的メンバ関数
 	/// <returns>生成されたモデル</returns>
 	static Model2* CreateFromOBJ(const std::string& modelname, bool smoothing = false);
 
-	//
+	// 四角形を複数生成する
 	static Model2* CreateSquare(int max);
+
+	// リングを生成
+	// リング生成
+	static Model2* CreateRing(
+	    int division,      // 分割数
+	    float innerRadius, // 内側半径
+	    float outerRadius  // 外側半径
+	);
 
 	/// <summary>
 	/// 球モデル生成
@@ -145,8 +153,6 @@ public: // 静的メンバ関数
 	/// </summary>
 	/// <param name="commandList">描画コマンドリスト</param>
 	static void PreDraw(ID3D12GraphicsCommandList* commandList);
-
-	
 
 	/// <summary>
 	/// 描画後処理

@@ -197,6 +197,88 @@ Model2* Model2::CreateSphere(uint32_t divisionVertial, uint32_t divisionHorizont
 	return instance;
 }
 
+// リング生成
+Model2* Model2::CreateRing(
+    int division,      // 分割数
+    float innerRadius, // 内側半径
+    float outerRadius  // 外側半径
+) {
+
+	// インスタンス生成
+	Model2* instance = new Model2;
+
+	std::vector<Mesh::VertexPosNormalUv> vertices;
+	std::vector<uint32_t> indices;
+
+	// ===== 頂点数 =====
+	// 1分割につき
+	// 内側1頂点 + 外側1頂点
+	const uint32_t kNumVertices = (division + 1) * 2;
+
+	// ===== インデックス数 =====
+	// 1分割につき三角形2枚
+	const uint32_t kNumIndices = division * 6;
+
+	vertices.resize(kNumVertices);
+	indices.resize(kNumIndices);
+
+	// =========================================
+	// 頂点生成
+	// =========================================
+	for (int i = 0; i <= division; i++) {
+
+		// 0.0 ～ 1.0
+		float t = (float)i / division;
+
+		// 角度
+		float angle = t * std::numbers::pi_v<float> * 2.0f;
+
+		float cosA = std::cos(angle);
+		float sinA = std::sin(angle);
+
+		// 頂点番号
+		int v = i * 2;
+
+		// ===== 内側 =====
+		vertices[v + 0].pos = {cosA * innerRadius, sinA * innerRadius, 0.0f};
+
+		vertices[v + 0].uv = {t, 1.0f};
+
+		vertices[v + 0].normal = {0.0f, 0.0f, 1.0f};
+
+		// ===== 外側 =====
+		vertices[v + 1].pos = {cosA * outerRadius, sinA * outerRadius, 0.0f};
+
+		vertices[v + 1].uv = {t, 0.0f};
+
+		vertices[v + 1].normal = {0.0f, 0.0f, 1.0f};
+	}
+
+	// =========================================
+	// インデックス生成
+	// =========================================
+	for (int i = 0; i < division; i++) {
+
+		int idx = i * 6;
+		int v = i * 2;
+
+		// 三角形1
+		indices[idx + 0] = v + 0;
+		indices[idx + 1] = v + 2;
+		indices[idx + 2] = v + 1;
+
+		// 三角形2
+		indices[idx + 3] = v + 1;
+		indices[idx + 4] = v + 2;
+		indices[idx + 5] = v + 3;
+	}
+
+	// 初期化
+	instance->InitializeFromVertices(vertices, indices);
+
+	return instance;
+}
+
 void Model2::PreDraw(ID3D12GraphicsCommandList* commandList) { ModelCommon2::GetInstance()->PreDraw(commandList); }
 
 void Model2::PostDraw() { ModelCommon2::GetInstance()->PostDraw(); }

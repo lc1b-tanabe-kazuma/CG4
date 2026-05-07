@@ -1,5 +1,6 @@
 #include "GameScene.h"
 #include "MyMath.h"
+#include <imgui.h>
 
 using namespace KamataEngine;
 
@@ -16,10 +17,24 @@ void GameScene::Initialize() {
 	//
 	worldTransform_.Initialize();
 
-	model2_ = Model2::CreateSquare(5);
+	// モデルの生成
+	model2_ = Model2::CreateRing(8, 5.0f, 10.0f);
 }
 
-void GameScene::Update() { WorldTransformUpdate(worldTransform_); }
+void GameScene::Update() {
+
+	// ワールドトランスフォームの更新
+	WorldTransformUpdate(worldTransform_);
+
+	// Imguiの表示
+#ifdef _DEBUG
+	ImGui::Begin("model");
+	ImGui::DragFloat3("translation", &worldTransform_.translation_.x, 0.01f);
+	ImGui::DragFloat3("rotation", &worldTransform_.rotation_.x, 0.01f);
+	ImGui::DragFloat3("scale", &worldTransform_.scale_.x, 0.01f);
+	ImGui::End();
+#endif
+}
 
 void GameScene::Draw() {
 	// DirectXCommonインスタンスの取得
@@ -28,6 +43,7 @@ void GameScene::Draw() {
 	// 3Dオブジェクト描画前処理
 	Model2::PreDraw(dxCommon->GetCommandList());
 
+	// モデルの描画
 	model2_->Draw(worldTransform_, camera_, textureHandle_);
 
 	// 3Dオブジェクト後処理
