@@ -49,15 +49,18 @@ Model2* Model2::CreateFromOBJ(const std::string& modelname, bool smoothing) {
 	return instance;
 }
 
-Model2* Model2::CreateSquare(int max) { 
-	
+// 四角形を複数生成する
+Model2* Model2::CreateSquare(int max) {
+
 	// メモリ確保
 	Model2* instance = new Model2;
+
 	std::vector<Mesh::VertexPosNormalUv> vertices;
 	std::vector<uint32_t> indices;
 
 	// 頂点数
 	const uint32_t kNumVertices = 4 * max;
+
 	// インデックス数
 	const uint32_t kNumIndices = 6 * max;
 
@@ -65,35 +68,46 @@ Model2* Model2::CreateSquare(int max) {
 	indices.resize(kNumIndices);
 
 	for (int i = 0; i < max; i++) {
-		int index = i * 4;
+
+		int v = i * 4;
+
+		// 横にずらす量
+		float offsetX = i * 2.0f;
+
 		// 左下
-		vertices[index + 0].pos = {i * 2 + -1.0f, -1.0f, 0.0f};
-		vertices[index + 0].uv = {0.0f, 1.0f};
-		vertices[index + 0].normal = {0.0f, 0.0f, 1.0f};
+		vertices[v + 0].pos = {-1.0f + offsetX, -1.0f, 0.0f};
+		vertices[v + 0].uv = {0.0f, 1.0f};
+		vertices[v + 0].normal = {0.0f, 0.0f, 1.0f};
+
 		// 左上
-		vertices[index + 1].pos = {i * 2 + -2.0f, 1.0f, 0.0f};
-		vertices[index + 1].uv = {0.0f, 0.0f};
-		vertices[index + 1].normal = {0.0f, 0.0f, 1.0f};
+		vertices[v + 1].pos = {-1.0f + offsetX, 1.0f, 0.0f};
+		vertices[v + 1].uv = {0.0f, 0.0f};
+		vertices[v + 1].normal = {0.0f, 0.0f, 1.0f};
+
 		// 右下
-		vertices[index + 2].pos = {i * 2 + 1.0f, -1.0f, 0.0f};
-		vertices[index + 2].uv = {1.0f, 1.0f};
-		vertices[index + 2].normal = {0.0f, 0.0f, 1.0f};
+		vertices[v + 2].pos = {1.0f + offsetX, -1.0f, 0.0f};
+		vertices[v + 2].uv = {1.0f, 1.0f};
+		vertices[v + 2].normal = {0.0f, 0.0f, 1.0f};
+
 		// 右上
-		vertices[index + 3].pos = {i * 2 + 2.0f, 1.0f, 0.0f};
-		vertices[index + 3].uv = {1.0f, 0.0f};
-		vertices[index + 3].normal = {0.0f, 0.0f, 1.0f};
+		vertices[v + 3].pos = {1.0f + offsetX, 1.0f, 0.0f};
+		vertices[v + 3].uv = {1.0f, 0.0f};
+		vertices[v + 3].normal = {0.0f, 0.0f, 1.0f};
 	}
 
 	// インデックス
 	for (int i = 0; i < max; i++) {
-		int index = i * 6;
-		int vertex = i * 4;
-		indices[index + 0] = vertex + 0;
-		indices[index + 1] = vertex + 1;
-		indices[index + 2] = vertex + 2;
-		indices[index + 3] = vertex + 1;
-		indices[index + 4] = vertex + 3;
-		indices[index + 5] = vertex + 2;
+
+		int idx = i * 6;
+		int v = i * 4;
+
+		indices[idx + 0] = v + 0;
+		indices[idx + 1] = v + 1;
+		indices[idx + 2] = v + 2;
+
+		indices[idx + 3] = v + 1;
+		indices[idx + 4] = v + 3;
+		indices[idx + 5] = v + 2;
 	}
 
 	instance->InitializeFromVertices(vertices, indices);

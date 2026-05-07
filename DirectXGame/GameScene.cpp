@@ -16,7 +16,7 @@ void GameScene::Initialize() {
 	//
 	worldTransform_.Initialize();
 
-	model2_ = Model2::CreateSquare(1);
+	model2_ = Model2::CreateSquare(5);
 }
 
 void GameScene::Update() { WorldTransformUpdate(worldTransform_); }
