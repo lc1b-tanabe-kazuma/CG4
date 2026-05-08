@@ -140,6 +140,10 @@ public: // 静的メンバ関数
 	    float outerRadius  // 外側半径
 	);
 
+	// / <summary>
+	// ダイヤモンドを生成
+	static Model2* CreateDiamond();
+
 	/// <summary>
 	/// 球モデル生成
 	/// </summary>

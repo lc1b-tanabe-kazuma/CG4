@@ -19,20 +19,26 @@ void GameScene::Initialize() {
 
 	// モデルの生成
 	model2_ = Model2::CreateRing(8, 5.0f, 10.0f);
+
+	// エフェクトの初期化
+	effect_ = new Effect();
+	effect_->Initialize(&camera_);
 }
 
 void GameScene::Update() {
 
+	effect_->Update();
+
 	// ワールドトランスフォームの更新
-	WorldTransformUpdate(worldTransform_);
+	// WorldTransformUpdate(worldTransform_);
 
 	// Imguiの表示
 #ifdef _DEBUG
-	ImGui::Begin("model");
+	/*ImGui::Begin("model");
 	ImGui::DragFloat3("translation", &worldTransform_.translation_.x, 0.01f);
 	ImGui::DragFloat3("rotation", &worldTransform_.rotation_.x, 0.01f);
 	ImGui::DragFloat3("scale", &worldTransform_.scale_.x, 0.01f);
-	ImGui::End();
+	ImGui::End();*/
 #endif
 }
 
@@ -44,7 +50,8 @@ void GameScene::Draw() {
 	Model2::PreDraw(dxCommon->GetCommandList());
 
 	// モデルの描画
-	model2_->Draw(worldTransform_, camera_, textureHandle_);
+	//	model2_->Draw(worldTransform_, camera_, textureHandle_);
+	effect_->Draw();
 
 	// 3Dオブジェクト後処理
 	Model2::PostDraw();
@@ -53,4 +60,5 @@ void GameScene::Draw() {
 GameScene::~GameScene() {
 	delete model2_;
 	Model2::StaticFinalize();
+	delete effect_;
 }

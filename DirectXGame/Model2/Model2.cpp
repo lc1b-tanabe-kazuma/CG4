@@ -279,6 +279,39 @@ Model2* Model2::CreateRing(
 	return instance;
 }
 
+// ダイヤモンドを生成
+Model2* Model2::CreateDiamond() {
+
+	Model2* instance = new Model2;
+
+	std::vector<Mesh::VertexPosNormalUv> vertices(4);
+
+	std::vector<uint32_t> indices = {0, 1, 2, 1, 3, 2};
+
+	// 上
+	vertices[0].pos = {0.0f, 1.0f, 0.0f};
+
+	// 左
+	vertices[1].pos = {-1.0f, 0.0f, 0.0f};
+
+	// 右
+	vertices[2].pos = {1.0f, 0.0f, 0.0f};
+
+	// 下
+	vertices[3].pos = {0.0f, -1.0f, 0.0f};
+
+	for (int i = 0; i < 4; i++) {
+
+		vertices[i].normal = {0.0f, 0.0f, 1.0f};
+
+		vertices[i].uv = {(vertices[i].pos.x + 1.0f) * 0.5f, 1.0f - ((vertices[i].pos.y + 1.0f) * 0.5f)};
+	}
+
+	instance->InitializeFromVertices(vertices, indices);
+
+	return instance;
+}
+
 void Model2::PreDraw(ID3D12GraphicsCommandList* commandList) { ModelCommon2::GetInstance()->PreDraw(commandList); }
 
 void Model2::PostDraw() { ModelCommon2::GetInstance()->PostDraw(); }
