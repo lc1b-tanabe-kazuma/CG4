@@ -1,3 +1,5 @@
+#define NOMINMAX
+
 #include "Effect.h"
 #include "MyMath.h"
 #include <imgui.h>
@@ -31,8 +33,21 @@ void Effect::Initialize(Camera* camera) {
 
 void Effect::Update() {
 
+	// 時間経過
+	lifeTimer_ += 1.0f / 30.0f;
+
+	// 0～1
+	alpha_ = 1.0f - (lifeTimer_ / lifeTime_);
+
+	// 0未満防止
+	alpha_ = std::max(alpha_, 0.0f);
+
+	model_->SetAlpha(alpha_);
+
 	// Rキーでリセット
 	if (Input::GetInstance()->TriggerKey(DIK_R)) {
+
+		lifeTimer_ = 0.0f;
 
 		// 乱数エンジン
 		std::random_device seedGenerator;

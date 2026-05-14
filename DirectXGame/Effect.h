@@ -26,8 +26,14 @@ private:
 	KamataEngine::Model2* model_ = nullptr;
 
 	// 色
-	KamataEngine::Vector4 color_ = {1, 1, 1, 1};
+	KamataEngine::ObjectColor color_;
 
 	// カメラ
 	KamataEngine::Camera* camera_ = nullptr;
+
+	float alpha_ = 1.0f;
+
+	float lifeTimer_ = 0.0f;
+
+	float lifeTime_ = 5.0f;
 };
