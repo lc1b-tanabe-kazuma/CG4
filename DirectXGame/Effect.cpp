@@ -15,24 +15,18 @@ void Effect::Initialize(Camera* camera) {
 	// ワールド変換
 	worldTransform_.Initialize();
 
-	// 裏側に回転する
-	worldTransform_.rotation_.y = 3.141592654f;
-
-	// スケールを大きくする
-	worldTransform_.scale_ = {5.0f, 5.0f, 5.0f};
-
 	// 乱数エンジン
-	std::random_device seedGen;
-	std::mt19937 engine(seedGen());
+	std::random_device seedGenerator;
+	std::mt19937_64 randomEngine;
+	randomEngine.seed(seedGenerator());
 
-	// スケール用
-	static std::uniform_real_distribution<float> scaleDist(1.0f, 5.0f);
+	std::uniform_real_distribution<float> randomRot(-0.3f, 5.3f);
 
-	// 回転用
-	static std::uniform_real_distribution<float> rotDist(0.0f, 3.141592654f);
+	worldTransform_.rotation_ = {0.0f, 3.14f, randomRot(randomEngine)};
 
-	worldTransform_.scale_ = {scaleDist(engine), scaleDist(engine), scaleDist(engine)};
-	worldTransform_.rotation_ = {rotDist(engine), rotDist(engine) + 2.5f, rotDist(engine)};
+	worldTransform_.scale_ = {1.0f, 4.0f, 1.0f};
+
+	worldTransform_.Initialize();
 }
 
 void Effect::Update() {
@@ -41,17 +35,15 @@ void Effect::Update() {
 	if (Input::GetInstance()->TriggerKey(DIK_R)) {
 
 		// 乱数エンジン
-		std::random_device seedGen;
-		std::mt19937 engine(seedGen());
+		std::random_device seedGenerator;
+		std::mt19937_64 randomEngine;
+		randomEngine.seed(seedGenerator());
 
-		// スケール用
-		static std::uniform_real_distribution<float> scaleDist(1.0f, 5.0f);
+		std::uniform_real_distribution<float> randomRot(-0.3f, 5.3f);
 
-		// 回転用
-		static std::uniform_real_distribution<float> rotDist(0.0f, 3.141592654f);
-		worldTransform_.scale_ = {scaleDist(engine), scaleDist(engine), scaleDist(engine)};
+		worldTransform_.rotation_ = {0.0f, 3.14f, randomRot(randomEngine)};
 
-		worldTransform_.rotation_ = {rotDist(engine), rotDist(engine) + 2.5f, rotDist(engine)};
+		worldTransform_.scale_ = {1.0f, 4.0f, 1.0f};
 	}
 
 	// 行列更新
@@ -69,3 +61,5 @@ void Effect::Update() {
 void Effect::Draw() { model_->Draw(worldTransform_, *camera_); }
 
 void Effect::SetPosition(const Vector3& position) { worldTransform_.translation_ = position; }
+
+void Effect::AddRotationZ(float angle) { worldTransform_.rotation_.z += angle; }

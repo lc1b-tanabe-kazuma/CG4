@@ -1,12 +1,12 @@
 #pragma once
+#include "Effect.h"
 #include "KamataEngine.h"
 #include "Model2/Model2.h"
-#include "Effect.h"
 
 // ゲームシーン
 class GameScene {
 
-	public:
+public:
 	// 初期化
 	void Initialize();
 
@@ -29,6 +29,7 @@ private:
 
 	KamataEngine::Model2* model2_ = nullptr;
 
-	// エフェクト
-	Effect* effect_ = nullptr;
+	// 複数のエフェクト
+	std::vector<Effect*> effects_;
+	const uint32_t kCount = 8;
 };

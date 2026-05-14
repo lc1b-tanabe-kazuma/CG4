@@ -16,6 +16,8 @@ public:
 	// 座標設定
 	void SetPosition(const KamataEngine::Vector3& position);
 
+	void AddRotationZ(float angle);
+
 private:
 	// ワールド変換
 	KamataEngine::WorldTransform worldTransform_;
