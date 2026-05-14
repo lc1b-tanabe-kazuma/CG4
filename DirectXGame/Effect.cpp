@@ -1,6 +1,7 @@
 #include "Effect.h"
 #include "MyMath.h"
 #include <imgui.h>
+#include <random>
 
 using namespace KamataEngine;
 
@@ -19,9 +20,40 @@ void Effect::Initialize(Camera* camera) {
 
 	// スケールを大きくする
 	worldTransform_.scale_ = {5.0f, 5.0f, 5.0f};
+
+	// 乱数エンジン
+	std::random_device seedGen;
+	std::mt19937 engine(seedGen());
+
+	// スケール用
+	static std::uniform_real_distribution<float> scaleDist(1.0f, 5.0f);
+
+	// 回転用
+	static std::uniform_real_distribution<float> rotDist(0.0f, 3.141592654f);
+
+	worldTransform_.scale_ = {scaleDist(engine), scaleDist(engine), scaleDist(engine)};
+
+	worldTransform_.rotation_ = {rotDist(engine), rotDist(engine) + 2.5f, rotDist(engine)};
 }
 
 void Effect::Update() {
+
+	// Rキーでリセット
+	if (Input::GetInstance()->TriggerKey(DIK_R)) {
+
+		// 乱数エンジン
+		std::random_device seedGen;
+		std::mt19937 engine(seedGen());
+
+		// スケール用
+		static std::uniform_real_distribution<float> scaleDist(1.0f, 5.0f);
+
+		// 回転用
+		static std::uniform_real_distribution<float> rotDist(0.0f, 3.141592654f);
+		worldTransform_.scale_ = {scaleDist(engine), scaleDist(engine), scaleDist(engine)};
+
+		worldTransform_.rotation_ = {rotDist(engine), rotDist(engine) + 2.5f, rotDist(engine)};
+	}
 
 	// 行列更新
 	WorldTransformUpdate(worldTransform_);
