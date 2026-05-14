@@ -32,7 +32,6 @@ void Effect::Initialize(Camera* camera) {
 	static std::uniform_real_distribution<float> rotDist(0.0f, 3.141592654f);
 
 	worldTransform_.scale_ = {scaleDist(engine), scaleDist(engine), scaleDist(engine)};
-
 	worldTransform_.rotation_ = {rotDist(engine), rotDist(engine) + 2.5f, rotDist(engine)};
 }
 
