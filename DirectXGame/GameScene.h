@@ -17,6 +17,8 @@ public:
 	void Draw();
 	~GameScene();
 
+	void SpawnStarEffect();
+
 private:
 	// テクスチャーハンドル
 	uint32_t textureHandle_ = 0;

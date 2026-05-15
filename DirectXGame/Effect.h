@@ -5,7 +5,7 @@
 class Effect {
 public:
 	// 初期化
-	void Initialize(KamataEngine::Camera* camera);
+	void Initialize(KamataEngine::Camera* camera, const KamataEngine::Vector4& color);
 
 	// 更新
 	void Update();
@@ -17,6 +17,8 @@ public:
 	void SetPosition(const KamataEngine::Vector3& position);
 
 	void AddRotationZ(float angle);
+
+	bool IsDead() const { return isDead_; }
 
 private:
 	// ワールド変換
@@ -35,5 +37,7 @@ private:
 
 	float lifeTimer_ = 0.0f;
 
-	float lifeTime_ = 5.0f;
+	float lifeTime_ = 1.0f;
+
+	bool isDead_ = false;
 };
