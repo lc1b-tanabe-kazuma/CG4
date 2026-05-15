@@ -20,6 +20,8 @@ public:
 
 	bool IsDead() const { return isDead_; }
 
+	~Effect();
+
 private:
 	// ワールド変換
 	KamataEngine::WorldTransform worldTransform_;

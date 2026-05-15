@@ -3,6 +3,7 @@
 #include "Effect.h"
 #include "MyMath.h"
 #include <imgui.h>
+#include <numbers>
 #include <random>
 
 using namespace KamataEngine;
@@ -17,65 +18,76 @@ void Effect::Initialize(Camera* camera, const Vector4& color) {
 	// ワールド変換
 	worldTransform_.Initialize();
 
-	// 乱数エンジン
-	std::random_device seedGenerator;
-	std::mt19937_64 randomEngine;
-	randomEngine.seed(seedGenerator());
-
-	// 回転乱数
-	std::uniform_real_distribution<float> randomRot(-0.3f, 0.3f);
-
-	worldTransform_.rotation_ = {0.0f, 3.14f, randomRot(randomEngine)};
-
-	// スケール
-	worldTransform_.scale_ = {1.0f, 4.0f, 1.0f};
-
-	// 色初期化
+	// 色
 	color_.Initialize();
-
 	color_.SetColor(color);
+
+	// 乱数エンジン
+	static std::mt19937 engine(std::random_device{}());
+
+	// 回転
+	std::uniform_real_distribution<float> randomRot(-std::numbers::pi_v<float>, std::numbers::pi_v<float>);
+
+	// 長さ
+	std::uniform_real_distribution<float> scaleY(2.0f, 12.0f);
+
+	// 太さ
+	std::uniform_real_distribution<float> scaleX(0.05f, 0.7f);
+
+	// 寿命
+	std::uniform_real_distribution<float> lifeDist(0.3f, 2.0f);
+
+	// 初期タイマー
+	std::uniform_real_distribution<float> timerDist(0.0f, 1.0f);
+
+	// 回転ランダム
+	worldTransform_.rotation_ = {0.0f, 3.14f, randomRot(engine)};
+
+	// サイズランダム
+	worldTransform_.scale_ = {scaleX(engine), scaleY(engine), 1.0f};
+
+	// 寿命ランダム
+	lifeTime_ = lifeDist(engine);
+
+	// 時間をズラす
+	lifeTimer_ = timerDist(engine) * lifeTime_;
+
+	// 初期アルファ
+	alpha_ = 1.0f;
+
+	// 死亡フラグ
+	isDead_ = false;
 }
 
 void Effect::Update() {
 
-	// 時間経過
+	// 時間更新
 	lifeTimer_ += 1.0f / 30.0f;
 
-	// 0～1
-	alpha_ = 1.0f - (lifeTimer_ / lifeTime_) / 3.0f;
+	// 進行率
+	float t = lifeTimer_ / lifeTime_;
+
+	// フェード
+	alpha_ = 1.0f - t / 3.0f;
 
 	// 0未満防止
 	alpha_ = std::max(alpha_, 0.0f);
 
-	model_->SetAlpha(alpha_);
+	// 色反映
+	Vector4 color = color_.GetColor();
+	color.w = alpha_;
+	color_.SetColor(color);
 
-	//
-	if (lifeTimer_ >= 1.0f) {
+	// 少し縮小
+	worldTransform_.scale_.y *= 0.95f;
 
-		lifeTimer_ = 0.0f;
-
-		// 乱数エンジン
-		std::random_device seedGenerator;
-		std::mt19937_64 randomEngine;
-		randomEngine.seed(seedGenerator());
-
-		std::uniform_real_distribution<float> randomRot(-0.3f, 5.3f);
-
-		worldTransform_.rotation_ += {0.0f, 3.14f, randomRot(randomEngine)};
-
+	// 寿命
+	if (lifeTimer_ >= lifeTime_) {
 		isDead_ = true;
 	}
 
 	// 行列更新
 	WorldTransformUpdate(worldTransform_);
-
-	// Imguiの表示
-#ifdef _DEBUG
-	// ImGui::Begin("effect");
-	// ImGui::DragFloat3("translation", &worldTransform_.translation_.x, 0.01f);
-	// ImGui::DragFloat3("rotation", &worldTransform_.rotation_.x, 0.01f);
-	// ImGui::End();
-#endif
 }
 
 void Effect::Draw() { model_->Draw(worldTransform_, *camera_, &color_); }
@@ -94,4 +106,10 @@ void Effect::AddRotationZ(float angle) {
 
 	// 行列更新
 	WorldTransformUpdate(worldTransform_);
+}
+
+Effect::~Effect() {
+
+	delete model_;
+	model_ = nullptr;
 }

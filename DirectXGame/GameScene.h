@@ -17,7 +17,7 @@ public:
 	void Draw();
 	~GameScene();
 
-	void SpawnStarEffect();
+	void SpawnStarEffect(int starCount);
 
 private:
 	// テクスチャーハンドル
@@ -32,6 +32,22 @@ private:
 	KamataEngine::Model2* model2_ = nullptr;
 
 	// 複数のエフェクト
-	std::vector<Effect*> effects_;
-	const uint32_t kCount = 8;
+	struct StarEffect {
+
+		std::vector<Effect*> effects;
+
+		KamataEngine::Vector3 position; // 星の中心位置
+
+		float timer = 0.0f;
+
+		float lifeTime = 3.0f;
+
+		float spawnDelay = 0.0f;
+
+		bool active = true;
+	};
+
+	std::vector<StarEffect> effects_;
+
+	const uint32_t kCount = 10;
 };
