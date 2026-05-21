@@ -4,7 +4,7 @@
 class Particle {
 public:
 	// 初期化
-	void Initialize(KamataEngine::Model* model, KamataEngine::Vector3 pos, KamataEngine::Vector3 velocity);
+	void Initialize(KamataEngine::Model* model, KamataEngine::Vector3 pos, KamataEngine::Vector3 velocity,KamataEngine::Vector4 color);
 
 	// 更新
 	void Update();

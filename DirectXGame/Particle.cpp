@@ -7,7 +7,7 @@
 using namespace KamataEngine;
 using namespace MathUtility;
 
-void Particle::Initialize(Model* model, Vector3 pos, Vector3 velocity) {
+void Particle::Initialize(Model* model, Vector3 pos, Vector3 velocity, Vector4 color) {
 
 	// モデルのセット
 	assert(model);
@@ -20,7 +20,7 @@ void Particle::Initialize(Model* model, Vector3 pos, Vector3 velocity) {
 
 	// 色の設定
 	objectColor_.Initialize();
-	color_ = {1, 1, 0, 1};
+	color_ = color;
 
 	// 速度の設定
 	velocity_ = velocity;

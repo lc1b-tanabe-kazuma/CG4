@@ -86,13 +86,22 @@ void GameScene::SpawnParticle(Vector3 pos) {
 		Particle* particle = new Particle();
 
 		// 速度
-		Vector3 velocity = {distribution(randomEngine), distribution(randomEngine), 0.0f};
-		Normalize(velocity);
-		velocity *= distribution(randomEngine);
-		velocity *= 0.1f;
+		float angle = i * 0.3f;
+		float speed = i * 0.005f;
+
+		// 渦巻き状に広がるように
+		Vector3 velocity = {cosf(angle) * speed, sinf(angle) * speed, 0.0f};
+
+		// 色をランダムに
+		Vector4 color = {
+			distribution(randomEngine) * 0.5f + 0.5f,
+			distribution(randomEngine) * 0.5f + 0.5f,
+			distribution(randomEngine) * 0.5f + 0.5f,
+			1.0f
+		};
 
 		// 初期化
-		particle->Initialize(modelParticle_, pos, velocity);
+		particle->Initialize(modelParticle_, pos, velocity, color);
 
 		// リストに追加
 		particles_.push_back(particle);
