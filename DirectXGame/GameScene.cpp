@@ -1,10 +1,13 @@
 #include "GameScene.h"
-#include "MyMath.h"
 #include <imgui.h>
-#include <numbers>
 #include <random>
 
 using namespace KamataEngine;
+using namespace MathUtility;
+
+std::random_device rd;
+std::mt19937 randomEngine(rd());
+std::uniform_real_distribution<float> distribution(-1.0f, 1.0f);
 
 void GameScene::Initialize() {
 	// テクスチャーインスタンスの作成
@@ -26,10 +29,16 @@ void GameScene::Initialize() {
 		Particle* particle = new Particle();
 
 		// 位置
-		Vector3 pos = {0.5f * i, 0.0f, 0.0f};
+		Vector3 pos = {0.0f, 0.0f, 0.0f};
+
+		// 速度
+		Vector3 velocity = {distribution(randomEngine), distribution(randomEngine), 0.0f};
+		Normalize(velocity);
+		velocity *= distribution(randomEngine);
+		velocity *= 0.1f;
 
 		// 初期化
-		particle->Initialize(modelParticle_, pos);
+		particle->Initialize(modelParticle_, pos, velocity);
 
 		// リストに追加
 		particles_.push_back(particle);
