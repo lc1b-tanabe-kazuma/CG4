@@ -31,5 +31,12 @@ private:
 	// 速度
 	Vector3 velocity_;
 
+	// 死亡フラグ
 	bool isDead_ = false;
+
+	// 経過時間
+	float counter_ = 0.0f;
+
+	// 持続時間
+	float lifeTime_ = 1.0f;
 };

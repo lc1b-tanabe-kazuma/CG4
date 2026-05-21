@@ -47,6 +47,15 @@ void GameScene::Initialize() {
 
 void GameScene::Update() {
 
+	// パーティクルの削除
+	particles_.remove_if([](Particle* particle) {
+		if (particle->IsDead()) {
+			delete particle;
+			return true;
+		}
+		return false;
+	});
+
 	// パーティクルの更新
 	for (Particle* particle : particles_) {
 		particle->Update();

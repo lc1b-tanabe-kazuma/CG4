@@ -1,5 +1,8 @@
 #include "Particle.h"
+#include <algorithm>
 #include <cassert>
+
+#define _USE_MATH_DEFINES
 
 using namespace MathUtility;
 
@@ -23,6 +26,23 @@ void Particle::Initialize(Model* model, Vector3 pos, Vector3 velocity) {
 }
 
 void Particle::Update() {
+
+	// 終了なら何もしない
+	if (isDead_) {
+		return;
+	}
+
+	// 経過時間を更新
+	counter_ += 1.0f / 60.0f;
+
+	// 持続時間を超えたら終了
+	if (counter_ >= lifeTime_) {
+		counter_ = lifeTime_;
+		isDead_ = true;
+	}
+
+	// フェードアウト
+	color_.w = std::clamp(1.0f - counter_ / lifeTime_, 0.0f, 1.0f);
 
 	// 色を変更
 	objectColor_.SetColor(color_);
