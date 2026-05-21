@@ -4,6 +4,7 @@
 
 #define _USE_MATH_DEFINES
 
+using namespace KamataEngine;
 using namespace MathUtility;
 
 void Particle::Initialize(Model* model, Vector3 pos, Vector3 velocity) {

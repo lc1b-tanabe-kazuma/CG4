@@ -2,8 +2,6 @@
 #include "KamataEngine.h"
 #include "Particle.h"
 
-using namespace KamataEngine;
-
 // ゲームシーン
 class GameScene {
 public:
@@ -18,7 +16,7 @@ public:
 	~GameScene();
 
 	// パーティクルの発生
-	void SpawnParticle(Vector3 pos);
+	void SpawnParticle(KamataEngine::Vector3 pos);
 
 private:
 	// テクスチャーハンドル
