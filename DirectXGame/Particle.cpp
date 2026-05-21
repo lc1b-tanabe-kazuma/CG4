@@ -4,7 +4,7 @@
 
 using namespace MathUtility;
 
-void Particle::Initialize(Model* model) {
+void Particle::Initialize(Model* model,Vector3 pos) {
 
 	// モデルのセット
 	assert(model);
@@ -12,6 +12,7 @@ void Particle::Initialize(Model* model) {
 
 	// ワールドトランスフォームの初期化
 	worldTransform_.Initialize();
+	worldTransform_.translation_ = pos;
 
 	// 色の設定
 	objectColor_.Initialize();

@@ -28,5 +28,5 @@ private:
 	KamataEngine::Model* modelParticle_ = nullptr;
 
 	// パーティクル
-	Particle* particel_ = nullptr;
+	std::list<Particle*> particles_;
 };

@@ -6,7 +6,7 @@ using namespace KamataEngine;
 class Particle {
 public:
 	// 初期化
-	void Initialize(Model* model);
+	void Initialize(Model* model,Vector3 pos);
 	
 	// 更新
 	void Update();
