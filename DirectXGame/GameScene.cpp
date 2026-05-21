@@ -24,7 +24,11 @@ void GameScene::Initialize() {
 	particel_->Initialize(modelParticle_);
 }
 
-void GameScene::Update() { particel_->Update(); }
+void GameScene::Update() { 
+	
+	// パーティクルの更新
+	particel_->Update();
+}
 
 void GameScene::Draw() {
 

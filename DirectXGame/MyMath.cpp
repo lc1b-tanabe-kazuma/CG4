@@ -142,19 +142,19 @@ Matrix4x4 operator*(const Matrix4x4& m1, const Matrix4x4& m2) {
 
 // ワールドトランスフォーム更新(02_03の最後)
 void WorldTransformUpdate(WorldTransform& worldTransform) {
-	//assert(worldTransform.parent_ != &worldTransform);
+	// assert(worldTransform.parent_ != &worldTransform);
 
 	Matrix4x4 affin_mat = MakeAffineMatrix(worldTransform.scale_, worldTransform.rotation_, worldTransform.translation_);
 
 	worldTransform.matWorld_ = affin_mat;
 
 	if (worldTransform.parent_) {
-	//	assert(worldTransform.parent_ != nullptr);
+		//	assert(worldTransform.parent_ != nullptr);
 		worldTransform.matWorld_ *= worldTransform.parent_->matWorld_;
 	}
 
 	// 定数バッファに転送する
-	worldTransform.TransferMatrix();
+	worldTransform.UpdateMatrix();
 }
 
 float Lerp(float x1, float x2, float t) { return (1.0f - t) * x1 + t * x2; }
@@ -189,8 +189,8 @@ Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix) {
 	result.y = vector.x * matrix.m[0][1] + vector.y * matrix.m[1][1] + vector.z * matrix.m[2][1] + 1.0f * matrix.m[3][1];
 	result.z = vector.x * matrix.m[0][2] + vector.y * matrix.m[1][2] + vector.z * matrix.m[2][2] + 1.0f * matrix.m[3][2];
 	float w = vector.x * matrix.m[0][3] + vector.y * matrix.m[1][3] + vector.z * matrix.m[2][3] + 1.0f * matrix.m[3][3];
-	//assert(w != 0.0f); // ベクトルに対して基本的な操作を行う行列でwが0になることはありえない
-	// w=1がデカルト座標系であるので、w除算することで同次座標をデカルト座標に戻す
+	// assert(w != 0.0f); // ベクトルに対して基本的な操作を行う行列でwが0になることはありえない
+	//  w=1がデカルト座標系であるので、w除算することで同次座標をデカルト座標に戻す
 	result.x /= w;
 	result.y /= w;
 	result.z /= w;

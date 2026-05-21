@@ -21,5 +21,11 @@ private:
 	// モデル
 	Model* model_ = nullptr;
 
+	// 色変更
+	ObjectColor objectColor_;
+
+	// 色の数値
+	Vector4 color_;
+
 	bool isDead_ = false;
 };
