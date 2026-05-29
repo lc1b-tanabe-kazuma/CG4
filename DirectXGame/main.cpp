@@ -1,5 +1,6 @@
 #include "GameScene.h"
 #include "KamataEngine.h"
+#include "SceneManager.h"
 #include <Windows.h>
 #include <imgui.h>
 
@@ -14,11 +15,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	// DirectXCommonインスタンスの取得
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
-	// ゲームシーンのインスタンス生成
-	GameScene* gameScene = new GameScene();
-
-	// ゲームシーンの初期化
-	gameScene->Initialize();
+	// scnenマネージャーの作成
+	SceneManager::GetInstance()->Initialize();
 
 #ifdef _DEBUG
 	// ImguiManagerのインスタンスを取得
@@ -37,8 +35,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 		imguiManager_->Begin();
 #endif
 
-		// ゲームシーンの更新
-		gameScene->Update();
+		// シーンマネージャーの更新
+		SceneManager::GetInstance()->Update();
 
 #ifdef _DEBUG
 		// Imgui受付終了
@@ -48,8 +46,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 		// 描画開始
 		dxCommon->PreDraw();
 
-		// ゲームシーンの描画
-		gameScene->Draw();
+		// シーンマネージャーの描画
+		SceneManager::GetInstance()->Draw();
 
 #ifdef _DEBUG
 		// Imguiの描画
@@ -61,10 +59,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	}
 
 	// ゲームシーンの解放
-	delete gameScene;
-
-	// nullptrの代入
-	gameScene = nullptr;
+	SceneManager::GetInstance()->Finalize();
 
 	// エンジンの終了処理
 	KamataEngine::Finalize();

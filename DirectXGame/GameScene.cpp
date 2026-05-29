@@ -1,4 +1,5 @@
 #include "GameScene.h"
+#include "SceneManager.h"
 #include <imgui.h>
 #include <random>
 
@@ -26,7 +27,26 @@ void GameScene::Initialize() {
 	srand((unsigned int)time(nullptr));
 }
 
+void GameScene::Finalize() {
+	// モデルの解放
+	if (modelParticle_) {
+		delete modelParticle_;
+		modelParticle_ = nullptr;
+	}
+
+	// パーティクルの解放
+	for (Particle* particle : particles_) {
+		delete particle;
+	}
+	particles_.clear();
+}
+
 void GameScene::Update() {
+
+	// Spaceキーが押されたらシーンを"Game"に変更
+	if (input_->TriggerKey(DIK_SPACE)) {
+		SceneManager::GetInstance()->ChangeScene("Title");
+	}
 
 	// パーティクルの削除
 	particles_.remove_if([](Particle* particle) {
@@ -67,15 +87,7 @@ void GameScene::Draw() {
 	Model::PostDraw();
 }
 
-GameScene::~GameScene() {
-	delete modelParticle_;
-
-	// パーティクルの解放
-	for (Particle* particle : particles_) {
-		delete particle;
-	}
-	particles_.clear();
-}
+GameScene::~GameScene() { Finalize(); }
 
 void GameScene::SpawnParticle(Vector3 pos) {
 
@@ -93,12 +105,7 @@ void GameScene::SpawnParticle(Vector3 pos) {
 		Vector3 velocity = {cosf(angle) * speed, sinf(angle) * speed, 0.0f};
 
 		// 色をランダムに
-		Vector4 color = {
-			distribution(randomEngine) * 0.5f + 0.5f,
-			distribution(randomEngine) * 0.5f + 0.5f,
-			distribution(randomEngine) * 0.5f + 0.5f,
-			1.0f
-		};
+		Vector4 color = {distribution(randomEngine) * 0.5f + 0.5f, distribution(randomEngine) * 0.5f + 0.5f, distribution(randomEngine) * 0.5f + 0.5f, 1.0f};
 
 		// 初期化
 		particle->Initialize(modelParticle_, pos, velocity, color);

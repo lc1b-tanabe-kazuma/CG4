@@ -1,22 +1,30 @@
 #pragma once
 #include "KamataEngine.h"
 #include "Particle.h"
+#include "SceneBase.h"
+#include <cassert>
+#include <sstream>
 
 // ゲームシーン
-class GameScene {
+class GameScene : public SceneBase {
 public:
+	~GameScene() override;
+
 	// 初期化
-	void Initialize();
+	void Initialize() override;
+
+	void Finalize() override;
 
 	// 更新
-	void Update();
+	void Update() override;
 
 	// 描画
-	void Draw();
-	~GameScene();
+	void Draw() override;
 
 	// パーティクルの発生
 	void SpawnParticle(KamataEngine::Vector3 pos);
+
+	GameScene(KamataEngine::Input* input) : SceneBase(input) {}
 
 private:
 	// テクスチャーハンドル
