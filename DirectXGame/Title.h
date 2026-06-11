@@ -20,5 +20,8 @@ public:
 	~Title() override;
 
 private:
-	
+	uint32_t UI_spaceTH;
+	KamataEngine::Sprite* UI_space;
+
+	void UpdateUI();
 };
