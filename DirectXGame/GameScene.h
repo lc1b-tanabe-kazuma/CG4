@@ -27,6 +27,8 @@ public:
 
 	void UpdateBG();
 
+	void UpdateUI();
+
 private:
 	// テクスチャーハンドル
 	uint32_t textureHandle_ = 0;
@@ -44,4 +46,11 @@ private:
 
 	// ステージ
 	Stage* stage_;
+
+	// UI
+	KamataEngine::Sprite* spriteHP_ = nullptr;
+	KamataEngine::Sprite* spriteHP2_ = nullptr;
+	uint32_t HPTH_ = 0;
+	KamataEngine::Vector2 posHP_ = {50, 50};
+	KamataEngine::Vector2 sizeHP_ = {100.0f, 20.0f};
 };
