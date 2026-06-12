@@ -2,6 +2,7 @@
 #include "KamataEngine.h"
 #include "Particle.h"
 #include "SceneBase.h"
+#include "Stage.h"
 #include <cassert>
 #include <sstream>
 
@@ -26,6 +27,8 @@ public:
 
 	GameScene(KamataEngine::Input* input) : SceneBase(input) {}
 
+	void UpdateBG();
+
 private:
 	// テクスチャーハンドル
 	uint32_t textureHandle_ = 0;
@@ -40,4 +43,7 @@ private:
 
 	// パーティクル
 	std::list<Particle*> particles_;
+
+	// ステージ
+	Stage* stage_;
 };

@@ -172,6 +172,7 @@
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SceneTransition.cpp" />
+    <ClCompile Include="Stage.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="WorldTransformEx.cpp" />
   </ItemGroup>
@@ -282,6 +283,7 @@
     <ClInclude Include="SceneBase.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SceneTransition.h" />
+    <ClInclude Include="Stage.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="TransitionBase.h" />
   </ItemGroup>

@@ -25,6 +25,10 @@ void GameScene::Initialize() {
 
 	// 乱数の初期化
 	srand((unsigned int)time(nullptr));
+
+	// ステージの初期化
+	stage_ = new Stage();
+	stage_->Initialize();
 }
 
 void GameScene::Finalize() {
@@ -47,6 +51,9 @@ void GameScene::Update() {
 	if (input_->TriggerKey(DIK_SPACE)) {
 		SceneManager::GetInstance()->ChangeScene("Title");
 	}
+
+	// ステージの更新
+	stage_->Update();
 
 	// パーティクルの削除
 	particles_.remove_if([](Particle* particle) {
@@ -74,6 +81,9 @@ void GameScene::Update() {
 }
 
 void GameScene::Draw() {
+
+	// ステージの描画
+	stage_->Draw();
 
 	// 3Dオブジェクト描画前処理
 	Model::PreDraw();
