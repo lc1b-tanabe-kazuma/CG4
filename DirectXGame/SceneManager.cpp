@@ -34,15 +34,6 @@ void SceneManager::Initialize() {
 	}
 }
 
-void SceneManager::Finalize() {
-	// ===== 修正ポイント：SceneTransitionのシングルトンもここで解放する =====
-	// もし SceneTransition 側に Finalize() やインスタンス解放関数があればそれを呼ぶ、
-	// なければ直接deleteするなどの処理が必要です（SceneTransitionの設計に合わせてください）
-
-	delete instance;
-	instance = nullptr;
-}
-
 void SceneManager::RegisterScene(const std::string& name, std::unique_ptr<SceneBase> scene) { scenes_[name] = std::move(scene); }
 
 void SceneManager::ChangeScene(const std::string& name) {
@@ -54,11 +45,6 @@ void SceneManager::ChangeScene(const std::string& name) {
 
 	// フェードトランジション開始
 	transition_->StartTransition("Fade", [this, name]() {
-		// ===== 現在のシーンの終了処理 =====
-		if (currentScene_) {
-			currentScene_->Finalize();
-		}
-
 		// ===== シーンを毎回新しく生成する =====
 		if (name == "Game") {
 			scenes_[name] = std::make_unique<GameScene>(input_);

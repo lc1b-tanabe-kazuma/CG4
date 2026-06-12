@@ -12,8 +12,6 @@ public:
 	// 更新
 	void Update() override;
 
-	void Finalize() override;
-
 	// 描画
 	void Draw() override;
 

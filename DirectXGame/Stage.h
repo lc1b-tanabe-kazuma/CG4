@@ -3,7 +3,6 @@
 
 class Stage {
 public:
-	~Stage();
 	void Initialize();
 	void Update();
 	void Draw();

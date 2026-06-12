@@ -59,7 +59,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	}
 
 	// ゲームシーンの解放
-	SceneManager::GetInstance()->Finalize();
+	//SceneManager::GetInstance()->Finalize();
 
 	// エンジンの終了処理
 	KamataEngine::Finalize();

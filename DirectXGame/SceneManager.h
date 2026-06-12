@@ -12,8 +12,6 @@ public:
 
 	// 初期化
 	void Initialize();
-	// 終了
-	void Finalize();
 
 	/// <summary>
 	/// シーンの登録

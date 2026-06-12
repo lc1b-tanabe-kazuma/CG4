@@ -1,11 +1,6 @@
 #include "Stage.h"
 using namespace KamataEngine;
 
-Stage::~Stage() {
-	delete spriteBG_;
-	delete spriteBG2_;
-}
-
 void Stage::Initialize() {
 	textureHandleBG_ = KamataEngine::TextureManager::Load("stage.png");
 	spriteBG_ = KamataEngine::Sprite::Create(textureHandleBG_, posBG_);
@@ -25,17 +20,7 @@ void Stage::Update() {
 }
 
 void Stage::Draw() {
-	// コマンドリストの取得
-	DirectXCommon* dxCommon_ = DirectXCommon::GetInstance();
-	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
-
-	// 画像描画前処理
-	Sprite::PreDraw(commandList);
-
 	// ステージの描画
 	spriteBG_->Draw();
 	spriteBG2_->Draw();
-
-	// 画像描画後処理
-	Sprite::PostDraw();
 }

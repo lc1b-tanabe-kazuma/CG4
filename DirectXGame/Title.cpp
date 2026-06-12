@@ -14,8 +14,6 @@ void Title::Initialize() {
 	UI_space->SetAnchorPoint({0.5f, 0.5f});
 }
 
-void Title::Finalize() {}
-
 void Title::Update() {
 
 	// Spaceキーが押されたらシーンを"Game"に変更

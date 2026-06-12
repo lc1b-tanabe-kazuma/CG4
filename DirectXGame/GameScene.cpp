@@ -10,6 +10,24 @@ std::random_device rd;
 std::mt19937 randomEngine(rd());
 std::uniform_real_distribution<float> distribution(-1.0f, 1.0f);
 
+GameScene::~GameScene() {
+	if (modelParticle_) {
+		delete modelParticle_;
+		modelParticle_ = nullptr;
+	}
+
+	// パーティクルの解放
+	for (Particle* particle : particles_) {
+		delete particle;
+	}
+	particles_.clear();
+
+	// ステージの解放
+	if (stage_) {
+		delete stage_;
+	}
+}
+
 void GameScene::Initialize() {
 	// テクスチャーインスタンスの作成
 	textureHandle_ = TextureManager::Load("uvChecker.png");
@@ -29,20 +47,6 @@ void GameScene::Initialize() {
 	// ステージの初期化
 	stage_ = new Stage();
 	stage_->Initialize();
-}
-
-void GameScene::Finalize() {
-	// モデルの解放
-	if (modelParticle_) {
-		delete modelParticle_;
-		modelParticle_ = nullptr;
-	}
-
-	// パーティクルの解放
-	for (Particle* particle : particles_) {
-		delete particle;
-	}
-	particles_.clear();
 }
 
 void GameScene::Update() {
@@ -82,8 +86,14 @@ void GameScene::Update() {
 
 void GameScene::Draw() {
 
+	// 画像描画前処理
+	Sprite::PreDraw();
+
 	// ステージの描画
 	stage_->Draw();
+
+	// 画像描画後処理
+	Sprite::PostDraw();
 
 	// 3Dオブジェクト描画前処理
 	Model::PreDraw();
@@ -96,8 +106,6 @@ void GameScene::Draw() {
 	// 3Dオブジェクト後処理
 	Model::PostDraw();
 }
-
-GameScene::~GameScene() { Finalize(); }
 
 void GameScene::SpawnParticle(Vector3 pos) {
 

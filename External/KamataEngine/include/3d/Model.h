@@ -225,7 +225,7 @@ public: // 静的メンバ関数
 	/// <param name="cullingMode">カリングモード</param>
 	/// <param name="blendMode">ブレンドモード</param>
 	/// <param name="depthTestMode">デプステストモード</param>
-	static void PreDraw(CullingMode cullingMode = CullingMode::kBack, BlendMode blendMode = BlendMode::kNormal, DepthTestMode depthTestMode = DepthTestMode::kOn);
+	static void PreDraw(CullingMode cullingMode = CullingMode::kBack, BlendMode blendMode = BlendMode::kNormal, DepthTestMode depthTestMode = DepthTestMode::kOff);
 
 	/// <summary>
 	/// 描画後処理
