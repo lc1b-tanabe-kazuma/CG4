@@ -23,6 +23,11 @@ void GameScene::Initialize() {
 	//
 	worldTransform_.Initialize();
 
+	// プレイヤーの初期化
+	player_ = new Player();
+	modelPlayer_ = Model::CreateFromOBJ("player", true);
+	player_->Initialize(modelPlayer_, &camera_);
+
 	// 乱数の初期化
 	srand((unsigned int)time(nullptr));
 
@@ -50,32 +55,35 @@ void GameScene::Update() {
 	// ステージの更新
 	stage_->Update();
 
+	// プレイヤーの更新
+	player_->Update();
+
 	// UIの更新
 	UpdateUI();
 
-	// パーティクルの削除
-	particles_.remove_if([](Particle* particle) {
-		if (particle->IsDead()) {
-			delete particle;
-			return true;
-		}
-		return false;
-	});
+	//// パーティクルの削除
+	//particles_.remove_if([](Particle* particle) {
+	//	if (particle->IsDead()) {
+	//		delete particle;
+	//		return true;
+	//	}
+	//	return false;
+	//});
 
-	// 確率でパーティクル発生
-	if (rand() % 20 == 0) {
+	//// 確率でパーティクル発生
+	//if (rand() % 20 == 0) {
 
-		// 発生位置は乱数で
-		Vector3 pos = {distribution(randomEngine) * 30.0f, distribution(randomEngine) * 20.0f, 0.0f};
+	//	// 発生位置は乱数で
+	//	Vector3 pos = {distribution(randomEngine) * 30.0f, distribution(randomEngine) * 20.0f, 0.0f};
 
-		// パーティクルの発生
-		SpawnParticle(pos);
-	}
+	//	// パーティクルの発生
+	//	SpawnParticle(pos);
+	//}
 
-	// パーティクルの更新
-	for (Particle* particle : particles_) {
-		particle->Update();
-	}
+	//// パーティクルの更新
+	//for (Particle* particle : particles_) {
+	//	particle->Update();
+	//}
 }
 
 void GameScene::Draw() {
@@ -96,10 +104,12 @@ void GameScene::Draw() {
 	// 3Dオブジェクト描画前処理
 	Model::PreDraw();
 
+	player_->Draw();
+
 	// パーティクルの描画
-	for (Particle* particle : particles_) {
+	/*for (Particle* particle : particles_) {
 		particle->Draw(camera_);
-	}
+	}*/
 
 	// 3Dオブジェクト後処理
 	Model::PostDraw();

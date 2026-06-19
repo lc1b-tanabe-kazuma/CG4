@@ -3,6 +3,7 @@
 #include "Particle.h"
 #include "SceneBase.h"
 #include "Stage.h"
+#include "Player.h"
 #include <cassert>
 #include <sstream>
 
@@ -53,4 +54,7 @@ private:
 	uint32_t HPTH_ = 0;
 	KamataEngine::Vector2 posHP_ = {50, 50};
 	KamataEngine::Vector2 sizeHP_ = {100.0f, 20.0f};
+
+	Player* player_ = nullptr;
+	KamataEngine::Model* modelPlayer_ = nullptr;
 };
