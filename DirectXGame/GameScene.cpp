@@ -43,6 +43,10 @@ void GameScene::Initialize() {
 	spriteHP2_->SetSize(sizeHP_);
 	spriteHP_->SetColor({1.0f, 0.0f, 0.0f, 0.5f});  // 赤色で半透明
 	spriteHP2_->SetColor({0.0f, 1.0f, 0.0f, 0.5f}); // 緑色で半透明
+
+	// 数字描画の初期化
+	drawNumber_ = new DrawNumber();
+	drawNumber_->Initialize(TextureManager::Load("number.png"));
 }
 
 void GameScene::Update() {
@@ -51,6 +55,9 @@ void GameScene::Update() {
 	if (input_->TriggerKey(DIK_SPACE)) {
 		SceneManager::GetInstance()->ChangeScene("Title");
 	}
+
+	// タイマーの更新
+	timer_ += 1.0f / 60.0f;
 
 	// ステージの更新
 	stage_->Update();
@@ -61,29 +68,8 @@ void GameScene::Update() {
 	// UIの更新
 	UpdateUI();
 
-	//// パーティクルの削除
-	//particles_.remove_if([](Particle* particle) {
-	//	if (particle->IsDead()) {
-	//		delete particle;
-	//		return true;
-	//	}
-	//	return false;
-	//});
-
-	//// 確率でパーティクル発生
-	//if (rand() % 20 == 0) {
-
-	//	// 発生位置は乱数で
-	//	Vector3 pos = {distribution(randomEngine) * 30.0f, distribution(randomEngine) * 20.0f, 0.0f};
-
-	//	// パーティクルの発生
-	//	SpawnParticle(pos);
-	//}
-
-	//// パーティクルの更新
-	//for (Particle* particle : particles_) {
-	//	particle->Update();
-	//}
+	// 数字描画の更新
+	drawNumber_->Update(static_cast<int>(timer_));
 }
 
 void GameScene::Draw() {
@@ -98,47 +84,20 @@ void GameScene::Draw() {
 	spriteHP_->Draw();
 	spriteHP2_->Draw();
 
+	// 数字描画
+	drawNumber_->Draw();
+
 	// 画像描画後処理
 	Sprite::PostDraw();
 
 	// 3Dオブジェクト描画前処理
 	Model::PreDraw();
 
+	// プレイヤーの描画
 	player_->Draw();
-
-	// パーティクルの描画
-	/*for (Particle* particle : particles_) {
-		particle->Draw(camera_);
-	}*/
 
 	// 3Dオブジェクト後処理
 	Model::PostDraw();
-}
-
-void GameScene::SpawnParticle(Vector3 pos) {
-
-	// パーティクルの初期化
-	for (int i = 0; i < 150; i++) {
-
-		// 生成
-		Particle* particle = new Particle();
-
-		// 速度
-		float angle = i * 0.3f;
-		float speed = i * 0.005f;
-
-		// 渦巻き状に広がるように
-		Vector3 velocity = {cosf(angle) * speed, sinf(angle) * speed, 0.0f};
-
-		// 色をランダムに
-		Vector4 color = {distribution(randomEngine) * 0.5f + 0.5f, distribution(randomEngine) * 0.5f + 0.5f, distribution(randomEngine) * 0.5f + 0.5f, 1.0f};
-
-		// 初期化
-		particle->Initialize(modelParticle_, pos, velocity, color);
-
-		// リストに追加
-		particles_.push_back(particle);
-	}
 }
 
 void GameScene::UpdateUI() {
@@ -158,14 +117,10 @@ GameScene::~GameScene() {
 		modelParticle_ = nullptr;
 	}
 
-	// パーティクルの解放
-	for (Particle* particle : particles_) {
-		delete particle;
-	}
-	particles_.clear();
-
 	// ステージの解放
 	if (stage_) {
 		delete stage_;
 	}
+
+	delete drawNumber_;
 }

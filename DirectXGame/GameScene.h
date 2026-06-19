@@ -1,9 +1,9 @@
 #pragma once
 #include "KamataEngine.h"
-#include "Particle.h"
 #include "SceneBase.h"
 #include "Stage.h"
 #include "Player.h"
+#include "DrawNumber.h"
 #include <cassert>
 #include <sstream>
 
@@ -20,9 +20,6 @@ public:
 
 	// 描画
 	void Draw() override;
-
-	// パーティクルの発生
-	void SpawnParticle(KamataEngine::Vector3 pos);
 
 	GameScene(KamataEngine::Input* input) : SceneBase(input) {}
 
@@ -42,9 +39,6 @@ private:
 
 	KamataEngine::Model* modelParticle_ = nullptr;
 
-	// パーティクル
-	std::list<Particle*> particles_;
-
 	// ステージ
 	Stage* stage_;
 
@@ -55,6 +49,14 @@ private:
 	KamataEngine::Vector2 posHP_ = {50, 50};
 	KamataEngine::Vector2 sizeHP_ = {100.0f, 20.0f};
 
+	// プレイヤー
 	Player* player_ = nullptr;
 	KamataEngine::Model* modelPlayer_ = nullptr;
+
+	// 数字描画
+	DrawNumber* drawNumber_;
+	uint32_t numberTH_ = 0;
+
+	// タイマー
+	float timer_ = 0.0f;
 };
