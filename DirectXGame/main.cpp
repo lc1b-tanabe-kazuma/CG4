@@ -24,6 +24,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	ImGuiManager* imguiManager_ = ImGuiManager::GetInstance();
 #endif
 
+	// カーソルを隠す
+	ShowCursor(FALSE);
+
 	// メインループ
 	while (true) {
 		// エンジンの更新

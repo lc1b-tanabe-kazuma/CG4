@@ -18,6 +18,10 @@ void Title::Initialize() {
 	UI_title = Sprite::Create(UI_titleTH, Vector2(600, 250));
 	UI_title->SetSize({512.0f, 256.0f});
 	UI_title->SetAnchorPoint({0.5f, 0.5f});
+
+	// エイムの初期化
+	aim_ = new Aim();
+	aim_->Initialize(&camera_);
 }
 
 void Title::Update() {
@@ -26,6 +30,8 @@ void Title::Update() {
 	if (input_->TriggerKey(DIK_SPACE)) {
 		SceneManager::GetInstance()->ChangeScene("Game");
 	}
+
+	aim_->Updeta();
 
 	// UIの更新
 	UpdateUI();
@@ -55,11 +61,13 @@ void Title::Draw() {
 	UI_space->Draw();
 	UI_title->Draw();
 
+	aim_->Draw();
+
 	// UI描画後処理
 	Sprite::PostDraw();
 }
 
-Title::~Title() {}
+Title::~Title() { delete aim_; }
 
 void Title::UpdateUI() {
 	// UIを点滅させる

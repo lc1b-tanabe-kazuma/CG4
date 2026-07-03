@@ -1,6 +1,7 @@
 #pragma once
 #include "KamataEngine.h"
 #include "SceneBase.h"
+#include "Aim.h"
 
 class Title : public SceneBase {
 public:
@@ -18,10 +19,13 @@ public:
 	~Title() override;
 
 private:
+	KamataEngine::Camera camera_;
 	uint32_t UI_spaceTH;
 	KamataEngine::Sprite* UI_space;
 	uint32_t UI_titleTH;
 	KamataEngine::Sprite* UI_title;
+
+	Aim* aim_ = nullptr;
 
 	void UpdateUI();
 };
