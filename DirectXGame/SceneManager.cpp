@@ -1,6 +1,6 @@
 #include "SceneManager.h"
 #include "GameScene.h"
-#include "Title.h" // ※お使いのタイトルシーンのクラス名が「Title」か「GameTitle」か確認してください
+#include "Title.h"
 
 using namespace std;
 using namespace KamataEngine;
@@ -86,4 +86,9 @@ void SceneManager::Draw() {
 	if (transition_ && transition_->IsTransitioning()) {
 		transition_->Draw();
 	}
+}
+
+void SceneManager::Finalize() {
+	delete instance;
+	instance = nullptr;
 }

@@ -16,7 +16,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
 	// scnenマネージャーの作成
-	SceneManager::GetInstance()->Initialize();
+	SceneManager* sceneManager = SceneManager::GetInstance();
+	sceneManager->Initialize();
 
 #ifdef _DEBUG
 	// ImguiManagerのインスタンスを取得
@@ -36,7 +37,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 #endif
 
 		// シーンマネージャーの更新
-		SceneManager::GetInstance()->Update();
+		sceneManager->Update();
 
 #ifdef _DEBUG
 		// Imgui受付終了
@@ -47,7 +48,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 		dxCommon->PreDraw();
 
 		// シーンマネージャーの描画
-		SceneManager::GetInstance()->Draw();
+		sceneManager->Draw();
 
 #ifdef _DEBUG
 		// Imguiの描画
@@ -58,11 +59,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 		dxCommon->PostDraw();
 	}
 
-	// ゲームシーンの解放
-	//SceneManager::GetInstance()->Finalize();
-
 	// エンジンの終了処理
 	KamataEngine::Finalize();
+
+	// シーンマネージャーの終了処理
+	sceneManager->Finalize();
 
 	return 0;
 }

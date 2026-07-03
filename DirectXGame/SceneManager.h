@@ -36,6 +36,8 @@ public:
 	/// </summary>
 	void Draw();
 
+	static void Finalize();
+
 private:
 	// シーン保存用
 	std::map<std::string, std::unique_ptr<SceneBase>> scenes_;

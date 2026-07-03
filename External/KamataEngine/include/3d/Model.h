@@ -51,7 +51,7 @@ public:
 	// デプステストモード
 	enum class DepthTestMode {
 		kOn = 0,     // デプステストあり（デプス書き込みあり）
-		kOff,    // デプステストなし（デプス書き込みなし）
+		kOff,        // デプステストなし（デプス書き込みなし）
 		kAlwaysPass, // 常にパスする（デプス書き込みあり）
 		kReadOnly,   // 読み取り専用（デプス書き込みなし）
 
@@ -75,11 +75,9 @@ public:
 
 	class PipelineSetKeyEqual {
 	public:
-		bool operator()(const PipelineSetKey& left, const PipelineSetKey& right) const { 
-			return 
-				left.cullingMode == right.cullingMode && 
-				left.blendMode == right.blendMode &&
-				left.depthTestMode == right.depthTestMode; }
+		bool operator()(const PipelineSetKey& left, const PipelineSetKey& right) const {
+			return left.cullingMode == right.cullingMode && left.blendMode == right.blendMode && left.depthTestMode == right.depthTestMode;
+		}
 	};
 
 	/// <summary>
@@ -225,7 +223,7 @@ public: // 静的メンバ関数
 	/// <param name="cullingMode">カリングモード</param>
 	/// <param name="blendMode">ブレンドモード</param>
 	/// <param name="depthTestMode">デプステストモード</param>
-	static void PreDraw(CullingMode cullingMode = CullingMode::kBack, BlendMode blendMode = BlendMode::kNormal, DepthTestMode depthTestMode = DepthTestMode::kOff);
+	static void PreDraw(CullingMode cullingMode = CullingMode::kBack, BlendMode blendMode = BlendMode::kNormal, DepthTestMode depthTestMode = DepthTestMode::kOn);
 
 	/// <summary>
 	/// 描画後処理

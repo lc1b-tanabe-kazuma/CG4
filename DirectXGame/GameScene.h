@@ -4,6 +4,7 @@
 #include "Stage.h"
 #include "Player.h"
 #include "DrawNumber.h"
+#include "Aim.h"
 #include <cassert>
 #include <sstream>
 
@@ -26,6 +27,8 @@ public:
 	void UpdateBG();
 
 	void UpdateUI();
+
+	KamataEngine::Vector3 GetMouseWorldPosition();
 
 private:
 	// テクスチャーハンドル
@@ -59,4 +62,9 @@ private:
 
 	// タイマー
 	float timer_ = 0.0f;
+
+	// エイム
+	Aim* aim_ = nullptr;
+
+	KamataEngine::Model* modelBullet_ = nullptr;
 };

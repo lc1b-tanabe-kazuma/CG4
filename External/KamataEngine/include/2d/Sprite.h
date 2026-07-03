@@ -25,7 +25,7 @@ public:
 		kScreen,    //!< スクリーン。Src * (1 - Dest) + Dest * 1
 		kExclusion, //!< 除外。(1 - Dest) * Src + (1 - Src) * Dest
 
-		kCountOfBlendMode,    //!< ブレンドモード数。指定はしない
+		kCountOfBlendMode, //!< ブレンドモード数。指定はしない
 	};
 
 public: // サブクラス

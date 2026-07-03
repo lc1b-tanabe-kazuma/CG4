@@ -26,7 +26,12 @@ void GameScene::Initialize() {
 	// プレイヤーの初期化
 	player_ = new Player();
 	modelPlayer_ = Model::CreateFromOBJ("player", true);
-	player_->Initialize(modelPlayer_, &camera_);
+	modelBullet_ = Model::CreateFromOBJ("playerBullet", true);
+	player_->Initialize(modelPlayer_, &camera_, modelBullet_);
+
+	// エイムの初期化
+	aim_ = new Aim();
+	aim_->Initialize(&camera_);
 
 	// 乱数の初期化
 	srand((unsigned int)time(nullptr));
@@ -51,17 +56,21 @@ void GameScene::Initialize() {
 
 void GameScene::Update() {
 
-	// Spaceキーが押されたらシーンを"Game"に変更
-	if (input_->TriggerKey(DIK_SPACE)) {
-		SceneManager::GetInstance()->ChangeScene("Title");
-	}
-
 	// タイマーの更新
 	timer_ += 1.0f / 60.0f;
 
 	// ステージの更新
 	stage_->Update();
 
+	// エイムの更新
+	aim_->Updeta();
+
+	if (aim_->IsAttac()) {
+		Vector3 worldPos = GetMouseWorldPosition();
+
+		player_->Attack({worldPos.x, worldPos.y});
+	}
+	
 	// プレイヤーの更新
 	player_->Update();
 
@@ -74,8 +83,11 @@ void GameScene::Update() {
 
 void GameScene::Draw() {
 
-	// 画像描画前処理
-	Sprite::PreDraw();
+	// DirectXCommonインスタンスの取得
+	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
+
+	// スプライト描画前処理
+	Sprite::PreDraw(dxCommon->GetCommandList());
 
 	// ステージの描画
 	stage_->Draw();
@@ -87,8 +99,13 @@ void GameScene::Draw() {
 	// 数字描画
 	drawNumber_->Draw();
 
+	aim_->Draw();
+
 	// 画像描画後処理
 	Sprite::PostDraw();
+
+	// 深度バッファクリア
+	dxCommon->ClearDepthBuffer();
 
 	// 3Dオブジェクト描画前処理
 	Model::PreDraw();
@@ -111,16 +128,27 @@ void GameScene::UpdateUI() {
 	}
 }
 
+KamataEngine::Vector3 GameScene::GetMouseWorldPosition() {
+	Ray ray = aim_->GetRayFromMouse();
+
+	// z = 0 の平面との交点
+	float t = -ray.origin.z / ray.direction.z;
+
+	return {ray.origin.x + ray.direction.x * t, ray.origin.y + ray.direction.y * t, 0.0f};
+}
+
 GameScene::~GameScene() {
-	if (modelParticle_) {
-		delete modelParticle_;
-		modelParticle_ = nullptr;
-	}
 
 	// ステージの解放
 	if (stage_) {
 		delete stage_;
 	}
+
+	delete player_;
+
+	delete modelPlayer_;
+
+	delete aim_;
 
 	delete drawNumber_;
 }

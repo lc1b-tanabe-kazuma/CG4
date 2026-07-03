@@ -20,6 +20,8 @@ public:
 private:
 	uint32_t UI_spaceTH;
 	KamataEngine::Sprite* UI_space;
+	uint32_t UI_titleTH;
+	KamataEngine::Sprite* UI_title;
 
 	void UpdateUI();
 };

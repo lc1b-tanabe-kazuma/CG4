@@ -12,6 +12,12 @@ void Title::Initialize() {
 	UI_space = Sprite::Create(UI_spaceTH, Vector2(600, 450));
 	UI_space->SetSize({512.0f, 256.0f});
 	UI_space->SetAnchorPoint({0.5f, 0.5f});
+
+	// UI
+	UI_titleTH = TextureManager::Load("UI/UI_title.png");
+	UI_title = Sprite::Create(UI_titleTH, Vector2(600, 250));
+	UI_title->SetSize({512.0f, 256.0f});
+	UI_title->SetAnchorPoint({0.5f, 0.5f});
 }
 
 void Title::Update() {
@@ -47,6 +53,7 @@ void Title::Draw() {
 	Sprite::PreDraw(commandList);
 
 	UI_space->Draw();
+	UI_title->Draw();
 
 	// UI描画後処理
 	Sprite::PostDraw();
