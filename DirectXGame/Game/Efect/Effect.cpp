@@ -1,6 +1,6 @@
 #define NOMINMAX
 
-#include "Effect.h"
+#include "Efect/Effect.h"
 #include "MyMath.h"
 #include <imgui.h>
 #include <numbers>

@@ -1,7 +1,7 @@
 #pragma once
 #include "KamataEngine.h"
 #include "SceneBase.h"
-#include "Aim.h"
+#include "UI/Aim.h"
 
 class Title : public SceneBase {
 public:
@@ -26,6 +26,8 @@ private:
 	KamataEngine::Sprite* UI_title;
 
 	Aim* aim_ = nullptr;
+	KamataEngine::Model* model_ = nullptr;
+	KamataEngine::WorldTransform worldTransform_;
 
 	void UpdateUI();
 };

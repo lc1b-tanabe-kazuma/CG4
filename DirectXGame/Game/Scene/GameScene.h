@@ -1,10 +1,11 @@
 #pragma once
+#include "UI/Aim.h"
+#include "UI/DrawNumber.h"
+#include "Enemy/Enemy.h"
 #include "KamataEngine.h"
+#include "Player/Player.h"
 #include "SceneBase.h"
 #include "Stage.h"
-#include "Player.h"
-#include "DrawNumber.h"
-#include "Aim.h"
 #include <cassert>
 #include <sstream>
 
@@ -30,6 +31,12 @@ public:
 
 	KamataEngine::Vector3 GetMouseWorldPosition();
 
+	// 敵の発生
+	void SpawnEnemy();
+
+	// 衝突判定
+	void OnCollision();
+
 private:
 	// テクスチャーハンドル
 	uint32_t textureHandle_ = 0;
@@ -47,6 +54,12 @@ private:
 
 	// UI
 	KamataEngine::Sprite* spriteHP_ = nullptr;
+
+	// 敵
+	std::list<Enemy*> enemies_;
+	KamataEngine::Model* modelEnemy_ = nullptr;
+	bool isSpawnEnemy_ = false;
+
 	KamataEngine::Sprite* spriteHP2_ = nullptr;
 	uint32_t HPTH_ = 0;
 	KamataEngine::Vector2 posHP_ = {50, 50};
@@ -67,4 +80,9 @@ private:
 	Aim* aim_ = nullptr;
 
 	KamataEngine::Model* modelBullet_ = nullptr;
+
+	// 
+	int score_ = 0;
+
+	bool isGameClear_ = false;
 };

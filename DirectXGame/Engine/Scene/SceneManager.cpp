@@ -1,4 +1,5 @@
 #include "SceneManager.h"
+#include "GameClear.h"
 #include "GameScene.h"
 #include "Title.h"
 
@@ -22,6 +23,7 @@ void SceneManager::Initialize() {
 	// ※Title.h 内のクラス名が「Title」の場合
 	RegisterScene("Title", std::make_unique<Title>(input_));
 	RegisterScene("Game", std::make_unique<GameScene>(input_));
+	RegisterScene("GameClear", std::make_unique<GameClear>(input_));
 
 	transition_ = SceneTransition::GetInstance();
 	transition_->Initialize();
@@ -51,6 +53,8 @@ void SceneManager::ChangeScene(const std::string& name) {
 		} else if (name == "Title") {
 			// ※Title.hのクラス名に合わせて「Title」または「GameTitle」にしてください
 			scenes_[name] = std::make_unique<Title>(input_);
+		} else if (name == "GameClear") {
+			scenes_[name] = std::make_unique<GameClear>(input_);
 		}
 
 		// ===== 新しいシーンに切り替え =====
