@@ -5,7 +5,7 @@ class DrawNumber {
 public:
 	~DrawNumber();
 
-	void Initialize(uint32_t textureHandle);
+	void Initialize(uint32_t textureHandle, KamataEngine::Vector2 pos);
 	void Update(uint32_t number);
 	void Draw();
 

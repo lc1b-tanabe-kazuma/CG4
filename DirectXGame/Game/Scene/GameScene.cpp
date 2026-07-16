@@ -18,8 +18,8 @@ void GameScene::Initialize() {
 	// カメラの初期化
 	camera_.Initialize();
 
-	modelParticle_->StaticInitialize();
-	modelParticle_ = Model::CreateSphere(4, 4);
+	// モデルの初期化
+	Model2::StaticInitialize();
 
 	//
 	worldTransform_.Initialize();
@@ -55,7 +55,7 @@ void GameScene::Initialize() {
 
 	// 数字描画の初期化
 	drawNumber_ = new DrawNumber();
-	drawNumber_->Initialize(TextureManager::Load("number.png"));
+	drawNumber_->Initialize(TextureManager::Load("number.png"), Vector2(1000.0f, 32.0f));
 }
 
 void GameScene::Update() {
@@ -72,6 +72,19 @@ void GameScene::Update() {
 		}
 		return false;
 	});
+
+	// エフェクトの消去
+	effects.erase(
+	    std::remove_if(
+	        effects.begin(), effects.end(),
+	        [](Effect* effect) {
+		        if (effect->IsDead()) {
+			        delete effect;
+			        return true;
+		        }
+		        return false;
+	        }),
+	    effects.end());
 
 	// タイマーの更新
 	timer_ += 1.0f / 60.0f;
@@ -116,6 +129,11 @@ void GameScene::Update() {
 
 	// 数字描画の更新
 	drawNumber_->Update(static_cast<int>(score_));
+
+	// エフェクトの更新
+	for (Effect* effect : effects) {
+		effect->Update();
+	}
 }
 
 void GameScene::Draw() {
@@ -157,20 +175,33 @@ void GameScene::Draw() {
 
 	// 3Dオブジェクト後処理
 	Model::PostDraw();
+
+	// 3Dオブジェクト描画前処理
+	Model2::PreDraw(dxCommon->GetCommandList());
+
+	// エフェクトの描画
+	for (Effect* effect : effects) {
+		effect->Draw();
+	}
+
+	// 3Dオブジェクト後処理
+	Model2::PostDraw();
 }
 
 void GameScene::UpdateUI() {
 
 	// 徐々にHPが減るように
 	static float hp = 1.0f;                                  // HPの割合（0.0f～1.0f）
-	hp -= 0.0005f;                                            // HPを減らす
+	hp -= 0.0005f;                                           // HPを減らす
 	spriteHP2_->SetSize(Vector2(sizeHP_.x * hp, sizeHP_.y)); // HPバーのサイズを更新
 	if (hp <= 0.0f) {
-		
+
 		// ゲームをクリアしたらシーンを"GameClear"に変更
 		SceneManager::GetInstance()->ChangeScene("GameClear");
 
 		hp = 1.0f; // HPが0になったらリセット
+
+		SceneManager::GetInstance()->SetScore(score_);
 
 		isGameClear_ = true;
 	}
@@ -214,6 +245,15 @@ void GameScene::OnCollision() {
 				enemy->OnCollision();
 
 				score_ += 100;
+
+				// エフェクトの生成
+
+				for (int i = 0; i < 10; i++) {
+					Effect* newEffect = new Effect;
+					newEffect->Initialize(&camera_, {1.0f, 0.2f, 0.2f, 1.0f});
+					newEffect->SetPosition(enemy->GetPosition());
+					effects.push_back(newEffect);
+				}
 			}
 		}
 	}
@@ -237,5 +277,20 @@ GameScene::~GameScene() {
 
 	for (Enemy* enemy : enemies_) {
 		delete enemy;
+	}
+
+	// 敵モデルの解放
+	if (modelEnemy_) {
+		delete modelEnemy_;
+	}
+
+	// 弾モデルの解放
+	if (modelBullet_) {
+		delete modelBullet_;
+	}
+
+	// エフェクトの解放
+	for (Effect* effect : effects) {
+		delete effect;
 	}
 }

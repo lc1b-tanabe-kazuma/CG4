@@ -38,6 +38,10 @@ public:
 
 	static void Finalize();
 
+	void SetScore(int score) { score_ = score; }
+
+	int GetScore() const { return score_; }
+
 private:
 	// シーン保存用
 	std::map<std::string, std::unique_ptr<SceneBase>> scenes_;
@@ -56,4 +60,6 @@ private:
 	~SceneManager() = default;
 	SceneManager(const SceneManager&) = delete;
 	SceneManager& operator=(const SceneManager&) = delete;
+
+	int score_ = 0;
 };

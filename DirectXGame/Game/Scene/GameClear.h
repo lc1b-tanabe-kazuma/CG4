@@ -1,6 +1,7 @@
 #pragma once
 #include "KamataEngine.h"
 #include "SceneBase.h"
+#include "UI/DrawNumber.h"
 
 class GameClear : public SceneBase {
 public:
@@ -21,6 +22,15 @@ private:
 	KamataEngine::Camera camera_;
 	uint32_t UI_spaceTH;
 	KamataEngine::Sprite* UI_space;
+
+	uint32_t UI_scoreTH;
+	KamataEngine::Sprite* UI_score;
+
+	// 数字描画
+	DrawNumber* drawNumber_;
+	uint32_t numberTH_ = 0;
+
+	int score_;
 
 	void UpdateUI();
 };

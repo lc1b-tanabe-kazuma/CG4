@@ -8,11 +8,11 @@ DrawNumber::~DrawNumber() {
 }
 
 // 初期化
-void DrawNumber::Initialize(uint32_t textureHandle) {
+void DrawNumber::Initialize(uint32_t textureHandle,Vector2 pos) {
 	textureHandle_ = textureHandle;
 	// スプライト
 	for (int i = 0; i < 5; i++) {
-		spriteNumbers_[i] = Sprite::Create(textureHandle_, {1000.0f + size_.x * i, 32.0f});
+		spriteNumbers_[i] = Sprite::Create(textureHandle_, {pos.x + size_.x * i, pos.y});
 	}
 }
 

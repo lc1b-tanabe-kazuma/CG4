@@ -12,6 +12,17 @@ void GameClear::Initialize() {
 	UI_space = Sprite::Create(UI_spaceTH, Vector2(600, 550));
 	UI_space->SetSize({512.0f, 256.0f});
 	UI_space->SetAnchorPoint({0.5f, 0.5f});
+
+	UI_scoreTH = TextureManager::Load("UI/UI_score.png");
+	UI_score = Sprite::Create(UI_scoreTH, Vector2(600, 150));
+	UI_score->SetSize({512.0f, 256.0f});
+	UI_score->SetAnchorPoint({0.5f, 0.5f});
+
+	// 数字描画の初期化
+	drawNumber_ = new DrawNumber();
+	drawNumber_->Initialize(TextureManager::Load("number.png"), Vector2(600, 350));
+
+	score_ = SceneManager::GetInstance()->GetScore();
 }
 
 void GameClear::Update() {
@@ -23,6 +34,9 @@ void GameClear::Update() {
 
 	// UIの更新
 	UpdateUI();
+
+	// 数字描画の更新
+	drawNumber_->Update(static_cast<int>(score_));
 
 #ifdef DEBUG
 	// ImGui
@@ -63,8 +77,16 @@ void GameClear::Draw() {
 
 	UI_space->Draw();
 
+	UI_score->Draw();
+
+	// 数字描画
+	drawNumber_->Draw();
+
 	// UI描画後処理
 	Sprite::PostDraw();
 }
 
-GameClear::~GameClear() { delete UI_space; }
+GameClear::~GameClear() {
+	delete UI_space;
+	delete drawNumber_;
+}
